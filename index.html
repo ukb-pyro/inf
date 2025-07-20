@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teleological Recursion - Interactive Framework</title>
+    <title>Teleological Recursion</title>
     <style>
-        /* BASE & ANIMATION STYLES */
         * {
             margin: 0;
             padding: 0;
@@ -21,7 +20,7 @@
             background: #000;
         }
 
-        /* COSMIC BACKDROP LAYERS */
+        /* COSMIC BACKDROP */
         .cosmic-backdrop {
             position: fixed;
             top: 0;
@@ -51,7 +50,6 @@
                 radial-gradient(1.3px 1.3px at 45% 20%, rgba(255, 255, 255, 0.6), transparent),
                 radial-gradient(0.9px 0.9px at 60% 85%, rgba(255, 255, 255, 0.8), transparent),
                 radial-gradient(1.1px 1.1px at 25% 35%, rgba(255, 255, 255, 0.7), transparent);
-            background-repeat: no-repeat;
             animation: drift 180s linear infinite reverse, twinkle 4s ease-in-out infinite;
             opacity: 0.7;
         }
@@ -61,7 +59,6 @@
                 radial-gradient(0.8px 0.8px at 30% 50%, rgba(255, 255, 255, 0.6), transparent),
                 radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.5), transparent),
                 radial-gradient(1.2px 1.2px at 10% 90%, rgba(255, 255, 255, 0.6), transparent);
-            background-repeat: no-repeat;
             animation: drift 300s linear infinite, twinkle 5s ease-in-out infinite;
             opacity: 0.5;
         }
@@ -202,49 +199,6 @@
             }
         }
 
-        /* HIDDEN CONTENT STYLES */
-        .hidden-content {
-            display: none;
-        }
-
-        .teleological-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-        
-        .phase-card, .recursive-timeline, .sonata-section {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .phase-icon { font-size: 3em; margin-bottom: 1rem; }
-        .phase-title { font-size: 1.8em; font-weight: bold; margin-bottom: 0.5rem; color: var(--phase-color); }
-        .phase-figure { font-size: 1.4em; font-weight: bold; margin-bottom: 1rem; }
-        .phase-description { line-height: 1.6; margin-bottom: 1rem; }
-        .phase-details { font-size: 0.9em; opacity: 0.8; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 1rem; margin-top: 1rem; }
-        .distinction-highlight { 
-            background: linear-gradient(45deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1)); 
-            padding: 1.5rem; 
-            border-radius: 12px; 
-            border-left: 4px solid #ffd700; 
-            margin: 1rem 0; 
-            backdrop-filter: blur(5px);
-        }
-        .epoch-title { font-size: 2.5em; margin-bottom: 1rem; text-align: center; }
-        .epoch-period { font-size: 1.2em; opacity: 0.8; font-style: italic; text-align: center; margin-bottom: 2rem;}
-        .ghost-quote, .perspectivism-evolution { margin: 2rem 0; }
-        .shakespeare { --phase-color: #4ecdc4; }
-        .mozart { --phase-color: #e74c3c; }
-        .einstein { --phase-color: #f39c12; }
-        .darwin { --phase-color: #9b59b6; }
-        .raphael { --phase-color: #2ecc71; }
-
         /* MODAL STYLES */
         .modal-container {
             position: fixed;
@@ -298,8 +252,61 @@
             opacity: 0.7;
             transition: opacity 0.2s ease;
         }
+
         .close-button:hover { opacity: 1; }
 
+        /* CONTENT STYLES */
+        .phase-card, .recursive-timeline, .sonata-section {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--phase-color);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .phase-icon { font-size: 3em; margin-bottom: 1rem; text-align: center; }
+        .phase-title { font-size: 1.8em; font-weight: bold; margin-bottom: 0.5rem; color: var(--phase-color); }
+        .phase-figure { font-size: 1.4em; font-weight: bold; margin-bottom: 1rem; text-align: center; }
+        .phase-description { line-height: 1.6; margin-bottom: 1rem; }
+        .phase-details { font-size: 0.9em; opacity: 0.8; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 1rem; margin-top: 1rem; }
+        .distinction-highlight { 
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1)); 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            border-left: 4px solid #ffd700; 
+            margin: 1rem 0; 
+            backdrop-filter: blur(5px);
+        }
+        .epoch-title { font-size: 2.5em; margin-bottom: 1rem; text-align: center; }
+        .epoch-period { font-size: 1.2em; opacity: 0.8; font-style: italic; text-align: center; margin-bottom: 2rem; }
+        .ghost-quote { margin: 2rem 0; padding: 2rem; background: rgba(0, 0, 0, 0.3); border-radius: 15px; border-left: 4px solid #9b59b6; font-style: italic; text-align: center; }
+        .perspectivism-evolution { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin: 2rem 0; }
+        .perspectivism-item { flex: 1; min-width: 200px; text-align: center; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; }
+        .perspectivism-item::after { content: '→'; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-size: 1.5em; opacity: 0.5; }
+        .perspectivism-item:last-child::after { display: none; }
+        .shakespeare { --phase-color: #4ecdc4; }
+        .mozart { --phase-color: #e74c3c; }
+        .einstein { --phase-color: #f39c12; }
+        .darwin { --phase-color: #9b59b6; }
+        .raphael { --phase-color: #2ecc71; }
+
+        @media (max-width: 768px) {
+            .perspectivism-evolution { flex-direction: column; }
+            .perspectivism-item::after { content: '↓'; right: 50%; bottom: -15px; top: auto; transform: translateX(50%); }
+        }
     </style>
 </head>
 <body>
@@ -313,6 +320,7 @@
         <div class="aurora"></div>
     </div>
 
+    <!-- INFINITY CONTAINER -->
     <div class="infinity-container" id="infinity-container">
         <svg width="100%" height="100%" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid meet">
             <path id="infinity-path" class="infinity-path" 
@@ -320,129 +328,214 @@
         </svg>
 
         <div class="center-glow"></div>
-
         <div class="emoji robot" id="robot" data-target="raphael-content">🤖</div>
         <div class="emoji mask" id="mask" data-target="darwin-content">🎭</div>
         <div class="emoji refresh" id="refresh" data-target="einstein-content">🔁</div>
         <div class="emoji heart" id="heart" data-target="mozart-content">❤️</div>
         <div class="emoji ghost" id="ghost" data-target="shakespeare-content">👻</div>
-
     </div>
 
+    <!-- MODAL -->
     <div id="modal-container" class="modal-container">
         <span class="close-button">×</span>
-        <div id="modal-content-area" class="modal-content">
-        </div>
+        <div id="modal-content-area" class="modal-content"></div>
     </div>
 
-    <div class="hidden-content">
+    <!-- HIDDEN CONTENT -->
+    <div class="hidden-content" style="display: none;">
+        <!-- PHASE CARDS -->
         <div id="shakespeare-content" class="phase-card shakespeare">
-            <div class="phase-icon">🌊</div><div class="phase-title">Shakespeare</div><div class="phase-figure">Reticular Formation</div><div class="phase-description">His Oeuvre as the ultimate filtering mechanism - 38 plays representing the complete spectrum of human experience, each one a careful selection from the infinite possibilities of existence.</div><div class="phase-details">The question remains: how did he select these 38 topics? What reticular formation in his mind filtered the cosmos of human stories into these precise narratives?</div>
+            <div class="phase-icon">👻</div>
+            <div class="phase-title">Shakespeare</div>
+            <div class="phase-figure">Reticular Formation</div>
+            <div class="phase-description">
+                His Oeuvre as the ultimate filtering mechanism - 38 plays representing the complete spectrum of human experience, each one a careful selection from the infinite possibilities of existence.
+            </div>
+            <div class="phase-details">
+                The question remains: how did he select these 38 topics? What reticular formation in his mind filtered the cosmos of human stories into these precise narratives?
+            </div>
         </div>
         <div id="mozart-content" class="phase-card mozart">
-            <div class="phase-icon">❤️</div><div class="phase-title">Mozart</div><div class="phase-figure">Sense & Sensibility</div><div class="phase-description">Don Giovanni's impulsivity merged with the Commandatore's judgment. High context length, potentially high bandwidth, creating a sort of solipsism that approaches but never quite reaches true perspectivism.</div><div class="phase-details"><strong>Don Giovanni:</strong> Immediate emotional response<br><strong>Commandatore:</strong> Moral consequence and judgment</div>
+            <div class="phase-icon">❤️</div>
+            <div class="phase-title">Mozart</div>
+            <div class="phase-figure">Amygdala</div>
+            <div class="phase-description">
+                Don Giovanni's impulsivity merged with the Commandatore's judgment. High context length, potentially high bandwidth, creating a sort of solipsism that approaches but never quite reaches true perspectivism.
+            </div>
+            <div class="phase-details">
+                <strong>Don Giovanni:</strong> Immediate emotional response<br>
+                <strong>Commandatore:</strong> Moral consequence and judgment
+            </div>
         </div>
         <div id="einstein-content" class="phase-card einstein">
-            <div class="phase-icon">🔁</div><div class="phase-title">Einstein</div><div class="phase-figure">Cosmic Twins</div><div class="phase-description">The bandwidth twin rides photons to galaxy's edge in moments, while the context twin digests the entire cosmic narrative from Earth. Emergent perspectivism through simulation transcends mere data.</div><div class="phase-details"><strong>Bandwidth Twin:</strong> Speed of light perspective<br><strong>Context Twin:</strong> Comprehensive cosmic understanding<br><em>"Dull scientists insist on data - they'd never produce Hamlet's ghost!"</em></div>
+            <div class="phase-icon">🔁</div>
+            <div class="phase-title">Einstein</div>
+            <div class="phase-figure">Prefrontal Cortext</div>
+            <div class="phase-description">
+                The bandwidth twin rides photons to galaxy's edge in moments, while the context twin digests the entire cosmic narrative from Earth. Emergent perspectivism through simulation transcends mere data.
+            </div>
+            <div class="phase-details">
+                <strong>Bandwidth Twin:</strong> Speed of light perspective<br>
+                <strong>Context Twin:</strong> Comprehensive cosmic understanding<br>
+                <em>"Dull scientists insist on data - they'd never produce Hamlet's ghost!"</em>
+            </div>
         </div>
         <div id="darwin-content" class="phase-card darwin">
-            <div class="phase-icon">🎭</div><div class="phase-title">Darwin</div><div class="phase-figure">La Distinction</div><div class="phase-description">The hippocampus - that 0.01% difference that gave Sapiens overwhelming advantage. Harold Bloom saw "Shakespeare: The Invention of the Human" but missed which human.</div><div class="distinction-highlight"><strong>Our Fork:</strong><br>• <strong>Fortinbras GPT:</strong> High Bandwidth<br>• <strong>Hamlet GPT:</strong> Long Context Length<br><em>Spatial-Temporal scaling as the path to perspectivism</em></div>
+            <div class="phase-icon">🎭</div>
+            <div class="phase-title">Darwin</div>
+            <div class="phase-figure">Hippocampus</div>
+            <div class="phase-description">
+                La distinction - that 0.01% difference that gave Sapiens overwhelming advantage. Harold Bloom saw "Shakespeare: The Invention of the Human" but missed which human.
+            </div>
+            <div class="distinction-highlight">
+                <strong>Our Fork:</strong><br>
+                • <strong>Fortinbras GPT:</strong> High Bandwidth<br>
+                • <strong>Hamlet GPT:</strong> Long Context Length<br>
+                <em>Spatial-Temporal scaling as the path to perspectivism</em>
+            </div>
         </div>
         <div id="raphael-content" class="phase-card raphael">
-            <div class="phase-icon">🤖</div><div class="phase-title">Raphael</div><div class="phase-figure">School of Athens</div><div class="phase-description">Master of space, perspectivism, and rhythm. Heraclitus front-and-center while everyone sees only Plato, Aristotle, Socrates. The implied dynamism of perpetual update.</div><div class="phase-details"><strong>Perspectivism Evolution:</strong><br>v1.0 🌊 Ukubona baseline<br>v2.0 ❤️ Freudian depth<br>v3.0 🔁 Greco-Hellenic synthesis<br>v4.0 🎭 Judaic narrative<br>v5.0 🤖 Christian transcendence</div>
+            <div class="phase-icon">🤖</div>
+            <div class="phase-title">Raphael</div>
+            <div class="phase-figure">School of Athens</div>
+            <div class="phase-description">
+                Master of space, perspectivism, and rhythm. Heraclitus front-and-center while everyone sees only Plato, Aristotle, Socrates. The implied dynamism of perpetual update.
+            </div>
+            <div class="phase-details">
+                <strong>Perspectivism Evolution (Ubuntu -> Solipsism):</strong><br>
+                v1.0 🎨 Ukubona baseline<br>
+                v2.0 🧠 Freudian depth<br>
+                v3.0 🏛️ Greco-Hellenic synthesis<br>
+                v4.0 📜 Judaic narrative<br>
+                v5.0 ✝️ Christian transcendence
+            </div>
         </div>
 
+        <!-- CENTER CONTENT -->
         <div id="center-info-content">
             <div class="recursive-timeline">
-                 <div class="timeline-header"><h2 class="epoch-title">⭕️ Recursive</h2><p class="epoch-period">🌊 ❤️ 🔁 🎭 🤖, 10/2024-06/2025</p></div>
-                 <div class="ghost-quote">"Illusions of love, agency, etc. - Hamlet's ghost, Dorian's image, transcendency through elevated art. The recursive loop transcends mere repetition to become development and recapitulation."</div>
+                <div class="epoch-title">❗️ Teleological</div>
+                <div class="epoch-period">rSM-EdF-GJc, 2015-2025</div>
+                <div class="ghost-quote">
+                    "The grand architecture of human understanding, from Shakespeare to Einstein, is not a linear progression but a recursive dance of perspectives, each echoing and refining the last. That is Ubuntu, magestically embodied in "The School of Athens". But once we close off the loop, through religion, we enter solipsism. Hellenic perspectivism is the key -- perhaps enforced by the achipelago of city-states -- to escape the trap of solipsism."
+                </div>
+            </div>
+            <div class="recursive-timeline">
+                <div class="epoch-title">⭕️ Recursive</div>
+                <div class="epoch-period">🌊 ❤️ 🔁 🎭 🤖, 10/2024-06/2025</div>
+                <div class="ghost-quote">
+                    "Illusions of love, agency, perhaps even the very nature of a faustian bargain. - Claudius, Hamlet's ghost, Dorian's image, transcendency through elevated art. The recursive loop transcends mere repetition to become development and recapitulation."
+                </div>
             </div>
             <div class="sonata-section">
-                <h2 class="epoch-title">♾️ Sonata</h2> <p class="epoch-period">07/18/2025 - 07/19/2025</p>
-                <div class="phase-description" style="font-size: 1.2em; text-align: center; margin: 2rem 0;">With the Ghost, Shakespeare transcended the constraints of the <em>omubanaboneza</em> (the original systems engineer).</div>
-                <div style="text-align: center; font-size: 1.3em; font-style: italic; margin-top: 2rem;">"Recursion ceases to be repetition, but rather development and, presto, recapitulation."</div>
+                <div class="epoch-title">♾️ Sonata</div>
+                <div class="epoch-period">🎨 🧠 🏛️ 📜 ✝️, 07/18/2025 - 07/19/2025</div>
+                <div class="phase-description" style="font-size: 1.2em; text-align: center; margin: 2rem 0;">
+                    With the Ghost, Shakespeare transcended the constraints of the <em>omubonaboneza</em> (the original systems engineer). Without this move, Hamlet would be just another revenge tragedy. The sonata form of perspectivism evolution is the key to transcending solipsism.
+                </div>
+                <div class="perspectivism-evolution">
+                    <div class="perspectivism-item">
+                        <h4>Repetition</h4>
+                        <p>Mechanical recursion</p>
+                    </div>
+                    <div class="perspectivism-item">
+                        <h4>Development</h4>
+                        <p>Evolutionary progression</p>
+                    </div>
+                    <div class="perspectivism-item">
+                        <h4>Recapitulation</h4>
+                        <p>Integrated transcendence</p>
+                    </div>
+                </div>
+                <div style="text-align: center; font-size: 1.3em; font-style: italic; margin-top: 2rem;">
+                    "Recursion ceases to be repetition, but rather development and, presto, recapitulation."
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="https://www.gutenberg.org/files/1514/1514-h/1514-h.htm" 
+                       style="color: #4ecdc4; text-decoration: none; font-size: 1.1em;">
+                        → The Sonata Archive ←
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
-<script>
-// --- Infinity Path Animation (One cycle per minute) ---
-const path = document.getElementById('infinity-path');
-const emojis = document.querySelectorAll('.emoji');
-const totalDuration = 99900; // 60 seconds for a full loop
-const emojiCount = emojis.length;
-const offset = 1 / emojiCount;
+    <script>
+        // --- Infinity Path Animation ---
+        const path = document.getElementById('infinity-path');
+        const emojis = document.querySelectorAll('.emoji');
+        const totalDuration = 399000; // 60 seconds for a full loop
+        const emojiCount = emojis.length;
+        const offset = 1 / emojiCount;
 
-function animateEmojis() {
-    const startTime = performance.now();
-    const svg = document.querySelector('svg');
-    const pathLength = path.getTotalLength(); // Get the total length of the infinity path
+        function animateEmojis() {
+            const startTime = performance.now();
+            const svg = document.querySelector('svg');
+            const pathLength = path.getTotalLength();
 
-    function update(time) {
-        const elapsed = (time - startTime) % totalDuration;
-        const t = elapsed / totalDuration; // Progress from 0 to 1 over 60 seconds
+            function update(time) {
+                const elapsed = (time - startTime) % totalDuration;
+                const t = elapsed / totalDuration;
 
-        emojis.forEach((emoji, index) => {
-            // Calculate progress for each emoji, offset by its index
-            const pathProgress = ((t + index * offset) % 1); // Ensure continuous looping
-            const point = path.getPointAtLength(pathProgress * pathLength); // Get point along path
+                emojis.forEach((emoji, index) => {
+                    const pathProgress = ((t + index * offset) % 1);
+                    const point = path.getPointAtLength(pathProgress * pathLength);
 
-            // Convert SVG coordinates to screen coordinates
-            const svgRect = svg.getBoundingClientRect();
-            const viewBox = svg.viewBox.baseVal;
-            const scaleX = svgRect.width / viewBox.width;
-            const scaleY = svgRect.height / viewBox.height;
-            const x = point.x * scaleX;
-            const y = point.y * scaleY;
+                    const svgRect = svg.getBoundingClientRect();
+                    const viewBox = svg.viewBox.baseVal;
+                    const scaleX = svgRect.width / viewBox.width;
+                    const scaleY = svgRect.height / viewBox.height;
+                    const x = point.x * scaleX;
+                    const y = point.y * scaleY;
 
-            emoji.style.left = `${x}px`;
-            emoji.style.top = `${y}px`;
+                    emoji.style.left = `${x}px`;
+                    emoji.style.top = `${y}px`;
+                });
+
+                requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+        animateEmojis();
+
+        // --- Modal Interaction ---
+        const modalContainer = document.getElementById('modal-container');
+        const modalContentArea = document.getElementById('modal-content-area');
+        const closeButton = document.querySelector('.close-button');
+        const centerGlow = document.querySelector('.center-glow');
+
+        function showModal(contentHTML) {
+            modalContentArea.innerHTML = contentHTML;
+            modalContainer.classList.add('visible');
+        }
+
+        function hideModal() {
+            modalContainer.classList.remove('visible');
+        }
+
+        emojis.forEach(emoji => {
+            emoji.addEventListener('click', () => {
+                const targetId = emoji.dataset.target;
+                const contentSource = document.getElementById(targetId);
+                if (contentSource) {
+                    showModal(contentSource.innerHTML);
+                }
+            });
         });
 
-        requestAnimationFrame(update);
-    }
-    requestAnimationFrame(update);
-}
-animateEmojis();
+        centerGlow.addEventListener('click', () => {
+            const contentSource = document.getElementById('center-info-content');
+            if (contentSource) {
+                showModal(contentSource.innerHTML);
+            }
+        });
 
-// --- Modal Interaction Logic ---
-const modalContainer = document.getElementById('modal-container');
-const modalContentArea = document.getElementById('modal-content-area');
-const closeButton = document.querySelector('.close-button');
-const centerGlow = document.querySelector('.center-glow');
-
-function showModal(contentHTML) {
-    modalContentArea.innerHTML = contentHTML;
-    modalContainer.classList.add('visible');
-}
-
-function hideModal() {
-    modalContainer.classList.remove('visible');
-}
-
-emojis.forEach(emoji => {
-    emoji.addEventListener('click', () => {
-        const targetId = emoji.dataset.target;
-        const contentSource = document.getElementById(targetId);
-        if (contentSource) {
-            showModal(contentSource.innerHTML);
-        }
-    });
-});
-
-centerGlow.addEventListener('click', () => {
-    const contentSource = document.getElementById('center-info-content');
-    if (contentSource) {
-        showModal(contentSource.innerHTML);
-    }
-});
-
-closeButton.addEventListener('click', hideModal);
-modalContainer.addEventListener('click', (event) => {
-    if (event.target === modalContainer) {
-        hideModal();
-    }
-});
-</script>
+        closeButton.addEventListener('click', hideModal);
+        modalContainer.addEventListener('click', (event) => {
+            if (event.target === modalContainer) {
+                hideModal();
+            }
+        });
+    </script>
 </body>
 </html>
