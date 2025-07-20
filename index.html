@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfectly Aligned Infinity Emojis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 30%, #0f0f23 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .infinity-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 40vw;
+            max-width: 1000px;
+            max-height: 500px;
+        }
+
+        .infinity-path {
+            stroke: #ff6b35;
+            stroke-width: 3;
+            fill: none;
+            filter: drop-shadow(0 0 10px #ff6b35);
+            opacity: 0.8;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 48px;
+            z-index: 10;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+            transform: translate(-50%, -50%);
+        }
+
+        .center-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.6) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.2; }
+        }
+
+        @media (max-width: 768px) {
+            .infinity-container {
+                width: 90vw;
+                height: 45vw;
+            }
+            .emoji {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <div class="infinity-container" id="infinity-container">
+        <svg width="100%" height="100%" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+            <path id="infinity-path" class="infinity-path" 
+                  d="M 200 200 
+                     C 200 100, 300 100, 400 200 
+                     C 500 300, 600 300, 600 200 
+                     C 600 100, 500 100, 400 200 
+                     C 300 300, 200 300, 200 200 Z"/>
+        </svg>
+
+        <div class="center-glow"></div>
+
+        <div class="emoji ghost" id="ghost">🤖</div>
+        <div class="emoji heart" id="heart">🎭</div>
+        <div class="emoji refresh" id="refresh">🔁</div>
+        <div class="emoji mask" id="mask">❤️</div>
+        <div class="emoji robot" id="robot">👻</div>
+    </div>
+
+    <script>
+        // Create stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 150;
+
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        createStars();
+
+        // Perfect path alignment
+        const path = document.getElementById('infinity-path');
+        const emojis = [
+            document.getElementById('ghost'),
+            document.getElementById('heart'),
+            document.getElementById('refresh'),
+            document.getElementById('mask'),
+            document.getElementById('robot')
+        ];
+        const totalDuration = 60000;
+        const emojiCount = emojis.length;
+        const offset = 1 / emojiCount;
+
+        function animateEmojis() {
+            const startTime = performance.now();
+            const svg = document.querySelector('svg');
+
+            function update(time) {
+                const elapsed = (time - startTime) % totalDuration;
+                const t = elapsed / totalDuration;
+
+                // Get precise SVG dimensions and position
+                const svgRect = svg.getBoundingClientRect();
+                const viewBox = { width: 800, height: 400 };
+                const scaleX = svgRect.width / viewBox.width;
+                const scaleY = svgRect.height / viewBox.height;
+
+                emojis.forEach((emoji, index) => {
+                    const pathProgress = (t + index * offset) % 1;
+                    const point = path.getPointAtLength(pathProgress * path.getTotalLength());
+
+                    // ✨ FIX: Calculate position relative to the SVG container, not the viewport.
+                    // We remove `svgRect.left` and `svgRect.top` from the calculation.
+                    const x = point.x * scaleX;
+                    const y = point.y * scaleY;
+
+                    emoji.style.left = `${x}px`;
+                    emoji.style.top = `${y}px`;
+                });
+
+                requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        animateEmojis();
+
+        // Hover effects
+        document.querySelectorAll('.emoji').forEach(emoji => {
+            emoji.addEventListener('mouseenter', function() {
+                this.style.transform = 'translate(-50%, -50%) scale(1.3)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+           
+            emoji.addEventListener('mouseleave', function() {
+                this.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
