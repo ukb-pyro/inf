@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfectly Aligned Infinity Emojis</title>
+    <title>Teleological Recursion - Interactive Framework</title>
     <style>
+        /* BASE & ANIMATION STYLES */
         * {
             margin: 0;
             padding: 0;
@@ -12,28 +13,12 @@
         }
 
         body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e8e8e8;
             height: 100vh;
-            background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 30%, #0f0f23 100%);
-            overflow: hidden;
+            overflow: hidden; /* Important for the full-screen animation */
             position: relative;
-        }
-
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite alternate;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0.3; }
-            100% { opacity: 1; }
         }
 
         .infinity-container {
@@ -48,150 +33,264 @@
         }
 
         .infinity-path {
-            stroke: #ff6b35;
+            stroke: rgba(255, 107, 53, 0.7);
             stroke-width: 3;
             fill: none;
-            filter: drop-shadow(0 0 10px #ff6b35);
-            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.8));
         }
 
         .emoji {
             position: absolute;
             font-size: 48px;
             z-index: 10;
+            cursor: pointer;
             filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
             transform: translate(-50%, -50%);
+            transition: transform 0.2s ease;
+        }
+
+        .emoji:hover {
+             transform: translate(-50%, -50%) scale(1.3) !important;
         }
 
         .center-glow {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, rgba(255, 107, 53, 0.6) 0%, transparent 70%);
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.5) 0%, transparent 70%);
             border-radius: 50%;
             animation: pulse 2s ease-in-out infinite alternate;
+            cursor: pointer;
+            z-index: 10;
         }
 
         @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.2; }
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.4; }
         }
 
-        @media (max-width: 768px) {
-            .infinity-container {
-                width: 90vw;
-                height: 45vw;
-            }
-            .emoji {
-                font-size: 32px;
-            }
+        /* HIDDEN CONTENT STYLES (for modal population) */
+        .hidden-content {
+            display: none;
         }
+
+        .teleological-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .phase-card, .recursive-timeline, .sonata-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .phase-icon { font-size: 3em; margin-bottom: 1rem; }
+        .phase-title { font-size: 1.8em; font-weight: bold; margin-bottom: 0.5rem; color: var(--phase-color); }
+        .phase-figure { font-size: 1.4em; font-weight: bold; margin-bottom: 1rem; }
+        .phase-description { line-height: 1.6; margin-bottom: 1rem; }
+        .phase-details { font-size: 0.9em; opacity: 0.8; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 1rem; margin-top: 1rem; }
+        .distinction-highlight { background: linear-gradient(45deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1)); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #ffd700; margin: 1rem 0; }
+        .epoch-title { font-size: 2.5em; margin-bottom: 1rem; text-align: center; }
+        .epoch-period { font-size: 1.2em; opacity: 0.8; font-style: italic; text-align: center; margin-bottom: 2rem;}
+        .ghost-quote, .perspectivism-evolution { margin: 2rem 0; }
+        .shakespeare { --phase-color: #4ecdc4; }
+        .mozart { --phase-color: #e74c3c; }
+        .einstein { --phase-color: #f39c12; }
+        .darwin { --phase-color: #9b59b6; }
+        .raphael { --phase-color: #2ecc71; }
+
+        /* MODAL STYLES */
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-container.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 800px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.4s ease;
+        }
+
+        .modal-container.visible .modal-content {
+            transform: scale(1);
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e8e8e8;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+        .close-button:hover { opacity: 1; }
+
     </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
 
     <div class="infinity-container" id="infinity-container">
-        <svg width="100%" height="100%" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+        <svg width="100%" height="100%" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
             <path id="infinity-path" class="infinity-path" 
-                  d="M 200 200 
-                     C 200 100, 300 100, 400 200 
-                     C 500 300, 600 300, 600 200 
-                     C 600 100, 500 100, 400 200 
-                     C 300 300, 200 300, 200 200 Z"/>
+                  d="M 250 250 C 250 0, 400 0, 500 250 C 600 500, 750 500, 750 250 C 750 0, 600 0, 500 250 C 400 500, 250 500, 250 250 Z"/>
         </svg>
 
         <div class="center-glow"></div>
 
-        <div class="emoji ghost" id="ghost">🤖</div>
-        <div class="emoji heart" id="heart">🎭</div>
-        <div class="emoji refresh" id="refresh">🔁</div>
-        <div class="emoji mask" id="mask">❤️</div>
-        <div class="emoji robot" id="robot">👻</div>
+        <div class="emoji ghost" id="ghost" data-target="shakespeare-content">👻</div>
+        <div class="emoji heart" id="heart" data-target="mozart-content">❤️</div>
+        <div class="emoji refresh" id="refresh" data-target="einstein-content">🔁</div>
+        <div class="emoji mask" id="mask" data-target="darwin-content">🎭</div>
+        <div class="emoji robot" id="robot" data-target="raphael-content">🤖</div>
+    </div>
+
+    <div id="modal-container" class="modal-container">
+        <span class="close-button">&times;</span>
+        <div id="modal-content-area" class="modal-content">
+            </div>
+    </div>
+
+
+    <div class="hidden-content">
+        <div id="shakespeare-content" class="phase-card shakespeare">
+            <div class="phase-icon">👻</div><div class="phase-title">Shakespeare</div><div class="phase-figure">Reticular Formation</div><div class="phase-description">His Oeuvre as the ultimate filtering mechanism - 38 plays representing the complete spectrum of human experience, each one a careful selection from the infinite possibilities of existence.</div><div class="phase-details">The question remains: how did he select these 38 topics? What reticular formation in his mind filtered the cosmos of human stories into these precise narratives?</div>
+        </div>
+        <div id="mozart-content" class="phase-card mozart">
+            <div class="phase-icon">❤️</div><div class="phase-title">Mozart</div><div class="phase-figure">Sense & Sensibility</div><div class="phase-description">Don Giovanni's impulsivity merged with the Commandatore's judgment. High context length, potentially high bandwidth, creating a sort of solipsism that approaches but never quite reaches true perspectivism.</div><div class="phase-details"><strong>Don Giovanni:</strong> Immediate emotional response<br><strong>Commandatore:</strong> Moral consequence and judgment</div>
+        </div>
+        <div id="einstein-content" class="phase-card einstein">
+            <div class="phase-icon">🔁</div><div class="phase-title">Einstein</div><div class="phase-figure">Cosmic Twins</div><div class="phase-description">The bandwidth twin rides photons to galaxy's edge in moments, while the context twin digests the entire cosmic narrative from Earth. Emergent perspectivism through simulation transcends mere data.</div><div class="phase-details"><strong>Bandwidth Twin:</strong> Speed of light perspective<br><strong>Context Twin:</strong> Comprehensive cosmic understanding<br><em>"Dull scientists insist on data - they'd never produce Hamlet's ghost!"</em></div>
+        </div>
+        <div id="darwin-content" class="phase-card darwin">
+            <div class="phase-icon">🎭</div><div class="phase-title">Darwin</div><div class="phase-figure">La Distinction</div><div class="phase-description">The hippocampus - that 0.01% difference that gave Sapiens overwhelming advantage. Harold Bloom saw "Shakespeare: The Invention of the Human" but missed which human.</div><div class="distinction-highlight"><strong>Our Fork:</strong><br>• <strong>Fortinbras GPT:</strong> High Bandwidth<br>• <strong>Hamlet GPT:</strong> Long Context Length<br><em>Spatial-Temporal scaling as the path to perspectivism</em></div>
+        </div>
+        <div id="raphael-content" class="phase-card raphael">
+            <div class="phase-icon">🤖</div><div class="phase-title">Raphael</div><div class="phase-figure">School of Athens</div><div class="phase-description">Master of space, perspectivism, and rhythm. Heraclitus front-and-center while everyone sees only Plato, Aristotle, Socrates. The implied dynamism of perpetual update.</div><div class="phase-details"><strong>Perspectivism Evolution:</strong><br>v1.0 🌊 Ukubona baseline<br>v2.0 ❤️ Freudian depth<br>v3.0 🔁 Greco-Hellenic synthesis<br>v4.0 🎭 Judaic narrative<br>v5.0 🤖 Christian transcendence</div>
+        </div>
+
+        <div id="center-info-content">
+            <div class="recursive-timeline">
+                 <div class="timeline-header"><h2 class="epoch-title">❗️ Teleology</h2><p class="epoch-period">rSM-EdF-GJc, 2015-2025</p></div>
+                 <div class="ghost-quote">"Illusions of love, agency, etc. - Hamlet's ghost, Dorian's image, transcendency through elevated art. The recursive loop transcends mere repetition to become development and recapitulation."</div>
+            </div>
+            <div class="recursive-timeline">
+                 <div class="timeline-header"><h2 class="epoch-title">⭕️ Recursive</h2><p class="epoch-period">👻 ❤️ 🔁 🎭 🤖, 10/2024-06/2025</p></div>
+                 <div class="ghost-quote">"Illusions of love, agency, etc. - Hamlet's ghost, Dorian's image, transcendency through elevated art. The recursive loop transcends mere repetition to become development and recapitulation."</div>
+            </div>
+            <div class="sonata-section">
+                <h2 class="epoch-title">♾️ Sonata</h2> <p class="epoch-period">🎨 🧠 🏛️ 📜 ✝️, 07/18/2025 - 07/19/2025</p>
+                <div class="phase-description" style="font-size: 1.2em; text-align: center; margin: 2rem 0;">With the Ghost, Shakespeare transcended the constraints of the <em>omubanaboneza</em> (the original systems engineer).</div>
+                <div style="text-align: center; font-size: 1.3em; font-style: italic; margin-top: 2rem;">"Recursion ceases to be repetition, but rather development and, presto, recapitulation."</div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Create stars
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const numberOfStars = 150;
-
-            for (let i = 0; i < numberOfStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.width = Math.random() * 3 + 1 + 'px';
-                star.style.height = star.style.width;
-                star.style.animationDelay = Math.random() * 3 + 's';
-                starsContainer.appendChild(star);
-            }
-        }
-
-        createStars();
-
-        // Perfect path alignment
+        // --- Infinity Path Animation ---
         const path = document.getElementById('infinity-path');
-        const emojis = [
-            document.getElementById('ghost'),
-            document.getElementById('heart'),
-            document.getElementById('refresh'),
-            document.getElementById('mask'),
-            document.getElementById('robot')
-        ];
-        const totalDuration = 60000;
+        const emojis = document.querySelectorAll('.emoji');
+        const totalDuration = 60000; // 60 seconds for a full loop
         const emojiCount = emojis.length;
         const offset = 1 / emojiCount;
 
         function animateEmojis() {
             const startTime = performance.now();
             const svg = document.querySelector('svg');
+            const viewBox = { width: 1000, height: 500 };
 
             function update(time) {
                 const elapsed = (time - startTime) % totalDuration;
                 const t = elapsed / totalDuration;
-
-                // Get precise SVG dimensions and position
                 const svgRect = svg.getBoundingClientRect();
-                const viewBox = { width: 800, height: 400 };
                 const scaleX = svgRect.width / viewBox.width;
                 const scaleY = svgRect.height / viewBox.height;
 
                 emojis.forEach((emoji, index) => {
                     const pathProgress = (t + index * offset) % 1;
                     const point = path.getPointAtLength(pathProgress * path.getTotalLength());
-
-                    // ✨ FIX: Calculate position relative to the SVG container, not the viewport.
-                    // We remove `svgRect.left` and `svgRect.top` from the calculation.
                     const x = point.x * scaleX;
                     const y = point.y * scaleY;
-
                     emoji.style.left = `${x}px`;
                     emoji.style.top = `${y}px`;
                 });
-
                 requestAnimationFrame(update);
             }
-
             requestAnimationFrame(update);
         }
-
         animateEmojis();
 
-        // Hover effects
-        document.querySelectorAll('.emoji').forEach(emoji => {
-            emoji.addEventListener('mouseenter', function() {
-                this.style.transform = 'translate(-50%, -50%) scale(1.3)';
-                this.style.transition = 'transform 0.2s ease';
-            });
-           
-            emoji.addEventListener('mouseleave', function() {
-                this.style.transform = 'translate(-50%, -50%) scale(1)';
+        // --- Modal Interaction Logic ---
+        const modalContainer = document.getElementById('modal-container');
+        const modalContentArea = document.getElementById('modal-content-area');
+        const closeButton = document.querySelector('.close-button');
+        const centerGlow = document.querySelector('.center-glow');
+
+        function showModal(contentHTML) {
+            modalContentArea.innerHTML = contentHTML;
+            modalContainer.classList.add('visible');
+        }
+
+        function hideModal() {
+            modalContainer.classList.remove('visible');
+        }
+
+        emojis.forEach(emoji => {
+            emoji.addEventListener('click', () => {
+                const targetId = emoji.dataset.target;
+                const contentSource = document.getElementById(targetId);
+                if (contentSource) {
+                    showModal(contentSource.innerHTML);
+                }
             });
         });
+
+        centerGlow.addEventListener('click', () => {
+            const contentSource = document.getElementById('center-info-content');
+            if (contentSource) {
+                showModal(contentSource.innerHTML);
+            }
+        });
+
+        closeButton.addEventListener('click', hideModal);
+        modalContainer.addEventListener('click', (event) => {
+            if (event.target === modalContainer) {
+                hideModal();
+            }
+        });
+
     </script>
 </body>
 </html>
